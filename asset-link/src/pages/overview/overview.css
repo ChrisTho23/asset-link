@@ -1,15 +1,142 @@
 .overview-container {
-    padding: 20px;
-    max-width: 1200px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 1800px;
     margin: 0 auto;
 }
 
 .overview-header {
-    margin-bottom: 24px;
+    margin-bottom: 2rem;
 }
 
-.overview-content {
-    background: white;
-    padding: 24px;
+.net-worth-container {
+    background: #f8f9fa;
+    padding: 1.5rem;
     border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.net-worth-amount {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.overview-charts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.chart-container {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.chart-title {
+    margin-bottom: 1rem;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.assets-list {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.assets-list-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+    font-weight: bold;
+}
+
+.asset-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.change.positive {
+    color: #2ecc71;
+}
+
+.change.negative {
+    color: #e74c3c;
+}
+
+.add-asset-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.add-asset-button:hover {
+    background-color: #0056b3;
+}
+
+.overview-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .overview-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .overview-container {
+        width: 95%;
+        padding: 1rem;
+    }
+
+    .net-worth-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+.add-asset-button-main {
+    background-color: #007bff;
+    color: white;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.add-asset-button-main:hover {
+    background-color: #0056b3;
+}
+
+.net-worth-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    text-align: left;
 }

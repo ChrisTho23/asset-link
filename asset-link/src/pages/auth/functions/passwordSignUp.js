@@ -1,17 +1,18 @@
-import supabase from '../../../subabaseClient.js';
+import supabase from '../../../../subabaseClient.js';
 
 const signUp = async (credentials) => {
-    const { data, error } = await supabase.auth.signUp({
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email: credentials.email,
         password: credentials.password,
         /*options: {
             emailRedirectTo: 'https://example.com/welcome',
         },*/
     });
-    if (error) {
-        throw error;
-    };
-    return data;
+    if (signUpError) {
+        throw signUpError;
+    }
+
+    return signUpData;
 };
 
 export default signUp;
