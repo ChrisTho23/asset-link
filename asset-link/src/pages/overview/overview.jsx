@@ -8,7 +8,7 @@ import AssetDistributionChart from './components/asset-distribution-chart/assetD
 import fetchUserData from './functions/fetchUserData';
 import fetchUserAssets from './functions/fetchUserAssets';
 import calculateTotalNetWorth from "./functions/calculateTotalNetWorth";
-import logNetWorthHistory from "./functions/logNetworthHistory";
+import logNetWorthHistory from "./functions/logNetWorthHistory";
 import './overview.css';
 
 const Overview = () => {
