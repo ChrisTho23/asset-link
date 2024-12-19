@@ -1,4 +1,4 @@
-import supabase from '../../../subabaseClient.js';
+import supabase from '../../../../subabaseClient.js';
 
 const oAuthSignUp = async (provider) => {
     const { data, error } = await supabase.auth.signInWithOAuth({
