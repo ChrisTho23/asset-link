@@ -41,9 +41,6 @@ const Auth = () => {
 
                 // create user account
                 const authData = await passwordSignUp(credentials);
-                if (!authData.user?.id) {
-                    throw new Error("Failed to create user account");
-                }
 
                 // redirect to email confirmation page
                 navigate('/auth/confirm-email', {

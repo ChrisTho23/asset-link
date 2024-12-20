@@ -13,10 +13,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path='about' element={<About />}></Route>
-          <Route path='auth' element={<Auth />}>
-            <Route path="confirm-email" element={<EmailConfirmation />} />
-          </Route>
+          <Route path='about' element={<About />} />
+          <Route path='auth' element={<Auth />} />
+          <Route path='auth/confirm-email' element={<EmailConfirmation />} />
           <Route path='overview/:id' element={<Overview />}>
             <Route path='onboarding' element={<Onboarding />} />
           </Route>
