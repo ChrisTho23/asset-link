@@ -1,17 +1,27 @@
 .chart-container {
     background-color: #f8f9fa;
     border-radius: 12px;
-    padding: 2rem;
+    padding: 1rem 2rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .chart-title {
     color: #333;
     font-size: 1.2rem;
-    margin-bottom: 1rem;
+    margin: 0;
+    padding: 0;
     text-align: left;
 }
 
 .chart-content {
     text-align: center;
+}
+
+.no-data-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    color: #666;
+    font-size: 1.1rem;
 }

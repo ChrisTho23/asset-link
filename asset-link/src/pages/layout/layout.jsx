@@ -1,5 +1,6 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import Header from '../../components/Header/Header';
+import BackgroundPattern from '../../components/BackgroundPattern/BackgroundPattern';
 import './layout.css';
 
 const Layout = () => {
@@ -8,6 +9,7 @@ const Layout = () => {
 
     return (
         <div className="layout-container">
+            {isHomePage && <BackgroundPattern />}
             {!isHomePage && <Header />}
             <div className={`content ${!isHomePage ? 'with-header' : ''}`}>
                 <Outlet />

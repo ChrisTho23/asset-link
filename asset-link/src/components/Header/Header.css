@@ -4,12 +4,13 @@
     left: 0;
     right: 0;
     height: 60px;
-    background-color: white;
+    background-color: rgba(18, 18, 18, 0.95);
+    backdrop-filter: blur(10px);
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 2rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     z-index: 1000;
 }
 
@@ -20,15 +21,15 @@
 }
 
 .header-title {
-    color: #89CFF0;
+    color: white;
     margin: 0;
     font-size: 1.5rem;
 }
 
 .about-button {
     background-color: transparent;
-    color: #213547;
-    border: 1px solid #213547;
+    color: white;
+    border: 1px solid white;
     padding: 0.5rem 1rem;
     border-radius: 4px;
     cursor: pointer;
@@ -36,6 +37,26 @@
 }
 
 .about-button:hover {
-    background-color: #213547;
+    background-color: white;
+    color: #121212;
+}
+
+.sign-out-button {
+    background-color: #dc3545;
     color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 1rem;
+    transition: background-color 0.2s;
+}
+
+.sign-out-button:hover {
+    background-color: #c82333;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
 }

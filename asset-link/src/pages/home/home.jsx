@@ -1,10 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AuthModal from './components/AuthModal';
+import { getSession } from './functions/sessionManager';
 import './home.css';
 
 const Home = () => {
+    const navigate = useNavigate();
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [initialView, setInitialView] = useState('login');
+
+    useEffect(() => {
+        const session = getSession();
+        if (session?.user) {
+            navigate(`/overview/${session.user.id}`);
+        }
+    }, [navigate]);
 
     const handleAuthClick = (view) => {
         setInitialView(view);
@@ -13,10 +23,7 @@ const Home = () => {
 
     return (
         <div className="home-container">
-            <div className="logo-container">
-                <img width="96" height="96" src="https://img.icons8.com/color/96/asset.png" alt="asset" />
-            </div>
-            <h1 style={{ color: '#89CFF0' }}>
+            <h1>
                 Asset Link
                 <p className="subtitle">
                     All your assets in one place

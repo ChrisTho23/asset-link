@@ -1,0 +1,12 @@
+.background-pattern {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-color: #0a0c10;
+    background-image: linear-gradient(to bottom,
+            rgba(10, 12, 16, 0.99),
+            rgba(10, 12, 16, 0.97));
+}

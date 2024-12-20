@@ -4,6 +4,7 @@
     align-items: center;
     width: 100%;
     text-align: center;
+    color: white;
 }
 
 .logo-container {
@@ -20,4 +21,13 @@
 .auth-button {
     background-color: white;
     color: #213547;
+}
+
+.subtitle {
+    color: white;
+    opacity: 0.9;
+    /* Optional: slightly dimmed for hierarchy */
+    margin-top: 0.5rem;
+    font-size: 3rem;
+    font-weight: normal;
 }
