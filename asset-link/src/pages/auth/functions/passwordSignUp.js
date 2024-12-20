@@ -1,3 +1,4 @@
+import { data } from 'react-router-dom';
 import supabase from '../../../../subabaseClient.js';
 
 const signUp = async (credentials) => {
