@@ -110,23 +110,6 @@
     }
 }
 
-.add-asset-button-main {
-    background-color: #007bff;
-    color: white;
-    padding: 1rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.2s;
-    width: 100%;
-    margin-top: 2rem;
-}
-
-.add-asset-button-main:hover {
-    background-color: #0056b3;
-}
-
 .net-worth-section {
     display: flex;
     flex-direction: column;
@@ -137,6 +120,6 @@
 .section-title {
     color: #333;
     font-size: 1.2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     text-align: left;
 }

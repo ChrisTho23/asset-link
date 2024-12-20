@@ -9,7 +9,9 @@ import fetchUserData from './functions/fetchUserData';
 import fetchUserAssets from './functions/fetchUserAssets';
 import calculateTotalNetWorth from "./functions/calculateTotalNetWorth";
 import logNetWorthHistory from "./functions/logNetWorthHistory";
+import deleteAssets from './functions/deleteAssets';
 import './overview.css';
+import updateAsset from './functions/updateAsset';
 
 const Overview = () => {
     const { id } = useParams();
@@ -51,6 +53,20 @@ const Overview = () => {
         }
     };
 
+    const handleDeleteAssets = async (assetIds) => {
+        const result = await deleteAssets(assetIds);
+        if (result.success) {
+            await loadData();
+        }
+    };
+
+    const handleUpdateAsset = async (updatedAsset) => {
+        const result = await updateAsset(updatedAsset);
+        if (result.success) {
+            await loadData();
+        }
+    };
+
     return (
         <div className="overview-container">
             {user && <Welcome firstName={user.first_name} lastName={user.last_name} />}
@@ -66,13 +82,9 @@ const Overview = () => {
             <AssetsList
                 assets={assets}
                 onAddAsset={() => setIsAddAssetModalOpen(true)}
+                onDeleteAssets={handleDeleteAssets}
+                onUpdateAsset={handleUpdateAsset}
             />
-            <button
-                className="add-asset-button-main"
-                onClick={() => setIsAddAssetModalOpen(true)}
-            >
-                Add New Asset
-            </button>
             <AddAssetModal
                 isOpen={isAddAssetModalOpen}
                 onClose={handleModalClose}
