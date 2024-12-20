@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import logIn from '../functions/logIn.js';
-import registerUser from '../functions/registerUser.js';
+import logIn from '../home/functions/logIn.js';
+import registerUser from '../home/functions/registerUser.js';
 
 const EmailConfirmation = () => {
     const location = useLocation();

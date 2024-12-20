@@ -1,8 +1,15 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import AuthModal from './components/AuthModal';
 import './home.css';
 
 const Home = () => {
-    const navigate = useNavigate();
+    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const [initialView, setInitialView] = useState('login');
+
+    const handleAuthClick = (view) => {
+        setInitialView(view);
+        setIsAuthModalOpen(true);
+    };
 
     return (
         <div className="home-container">
@@ -16,13 +23,19 @@ const Home = () => {
                 </p>
             </h1>
             <div className="button-container">
-                <button className='auth-button' onClick={() => navigate('/auth', { state: { isLogin: false } })}>
+                <button className='auth-button' onClick={() => handleAuthClick('signup')}>
                     Sign up
                 </button>
-                <button className='auth-button' onClick={() => navigate('/auth', { state: { isLogin: true } })}>
+                <button className='auth-button' onClick={() => handleAuthClick('login')}>
                     Log in
                 </button>
             </div>
+
+            <AuthModal
+                isOpen={isAuthModalOpen}
+                onClose={() => setIsAuthModalOpen(false)}
+                initialView={initialView}
+            />
         </div>
     );
 };
