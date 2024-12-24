@@ -13,13 +13,33 @@
 
 .button-container {
     display: flex;
+    flex-direction: column;
     gap: 1rem;
     justify-content: center;
     margin-top: 1rem;
+    width: fit-content;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
 }
 
 .auth-button {
     background-color: white;
+    color: #213547;
+    width: 120px;
+}
+
+.home-about-button {
+    background-color: #7bbfe0;
+    color: white;
+    width: 248px;
+}
+
+.home-about-button:hover {
+    background-color: #f0f0f0;
     color: #213547;
 }
 
@@ -30,4 +50,9 @@
     margin-top: 0.5rem;
     font-size: 3rem;
     font-weight: normal;
+}
+
+.about-container {
+    margin: 1rem 0;
+    width: fit-content;
 }
