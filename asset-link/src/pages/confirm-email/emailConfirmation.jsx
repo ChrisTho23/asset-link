@@ -26,7 +26,7 @@ const EmailConfirmation = () => {
             }
 
             // register user 
-            await registerUser(loginData, userData);
+            await registerUser(loginData.user?.id, userData);
 
             // redirect to onboarding
             navigate(`/overview/${loginData.user.id}/onboarding`);

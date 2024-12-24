@@ -1,15 +1,17 @@
 import supabase from '../../../../subabaseClient.js';
 
-const registerUser = async (authData, userData) => {
+const registerUser = async (id, userData) => {
     const { data, error } = await supabase
         .from('users')
         .update({
             first_name: userData.firstName,
             last_name: userData.lastName,
-            birth_date: new Date(userData.birthDate).toISOString().split('T')[0]
+            email: userData.email
         })
-        .eq('id', authData.user?.id)
+        .eq('id', id)
         .select();
+
+    console.log()
 
     if (error) {
         console.error('Error updating user:', error);
