@@ -2,6 +2,10 @@ import { useState, useEffect } from 'react';
 import './AddAssetModal.css';
 import addAsset from '../../functions/addAsset';
 import searchSymbol from '../../functions/searchSymbol';
+import { assetTypes } from '../../functions/assetTypes';
+import { supportedCryptos } from '../../functions/cryptoConfig';
+import { supportedPreciousMetals } from '../../functions/preciousMetalsConfig';
+import { icons } from '../../../../assets/icons';
 
 const AddAssetModal = ({ isOpen, onClose }) => {
     const [assetData, setAssetData] = useState({
@@ -14,12 +18,33 @@ const AddAssetModal = ({ isOpen, onClose }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
+    const [skipSearch, setSkipSearch] = useState(false);
 
     useEffect(() => {
+        if (skipSearch) {
+            setSkipSearch(false);
+            return;
+        }
+
         const searchTimeout = setTimeout(async () => {
             if (searchQuery && searchQuery.length >= 2) {
                 setIsSearching(true);
-                const results = await searchSymbol(searchQuery);
+                let results;
+
+                if (assetData.type === 'crypto') {
+                    results = supportedCryptos.filter(crypto =>
+                        crypto.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        crypto.name.toLowerCase().includes(searchQuery.toLowerCase())
+                    );
+                } else if (assetData.type === 'precious_metals') {
+                    results = Object.values(supportedPreciousMetals).filter(metal =>
+                        metal.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        metal.name.toLowerCase().includes(searchQuery.toLowerCase())
+                    );
+                } else {
+                    results = await searchSymbol(searchQuery);
+                }
+
                 setSearchResults(results);
                 setIsSearching(false);
             } else {
@@ -28,9 +53,10 @@ const AddAssetModal = ({ isOpen, onClose }) => {
         }, 500);
 
         return () => clearTimeout(searchTimeout);
-    }, [searchQuery]);
+    }, [searchQuery, assetData.type]);
 
-    const handleSymbolSelect = (result) => {
+    const handleSymbolSelect = async (result) => {
+        setSkipSearch(true);
         setAssetData({
             ...assetData,
             ticker: result.symbol,
@@ -40,22 +66,16 @@ const AddAssetModal = ({ isOpen, onClose }) => {
         setSearchQuery(result.symbol);
     };
 
-    const assetTypes = [
-        { value: 'stock', label: 'Stock' },
-        { value: 'crypto', label: 'Cryptocurrency' },
-        { value: 'precious_metals', label: 'Precious Metals' },
-        { value: 'real_estate', label: 'Real Estate' },
-        { value: 'equity', label: 'Private Equity' },
-        { value: 'cash', label: 'Cash' }
-    ];
-
     const handleTypeSelect = (type) => {
         setAssetData({
-            ...assetData,
             type,
+            name: type === 'cash' ? 'Cash' : '',
+            ticker: '',
             units: type === 'real_estate' ? '1' : '',
-            ...(type === 'cash' && { name: 'Cash', currentPrice: '1' })
+            currentPrice: type === 'cash' ? '1' : ''
         });
+        setSearchQuery('');
+        setSearchResults([]);
     };
 
     const handleSubmit = async (e) => {
@@ -81,6 +101,11 @@ const AddAssetModal = ({ isOpen, onClose }) => {
 
     const needsTickerSymbol = ['stock', 'crypto', 'precious_metals'].includes(assetData.type);
 
+    const getIconById = (id) => {
+        const iconObj = icons.find(icon => icon.id === id);
+        return iconObj ? iconObj.icon : null;
+    };
+
     if (!isOpen) return null;
 
     return (
@@ -97,8 +122,10 @@ const AddAssetModal = ({ isOpen, onClose }) => {
                                 key={type.value}
                                 className={`type-button ${assetData.type === type.value ? 'active' : ''}`}
                                 onClick={() => handleTypeSelect(type.value)}
+                                data-type={type.value}
                             >
-                                {type.label}
+                                {getIconById(type.value)}
+                                <span>{type.label}</span>
                             </button>
                         ))}
                     </div>
@@ -109,7 +136,7 @@ const AddAssetModal = ({ isOpen, onClose }) => {
                         {needsTickerSymbol ? (
                             <>
                                 <div className="form-group">
-                                    <label>Search Stock</label>
+                                    <label>Search {assetData.type === 'precious_metals' ? 'Metal' : 'Stock'}</label>
                                     <input
                                         type="text"
                                         value={searchQuery}
@@ -117,7 +144,7 @@ const AddAssetModal = ({ isOpen, onClose }) => {
                                             setSearchQuery(e.target.value);
                                             setAssetData({ ...assetData, ticker: e.target.value });
                                         }}
-                                        placeholder="Search by company name or symbol"
+                                        placeholder="Search by name or symbol"
                                         required
                                     />
                                     {isSearching && <div className="search-loading">Searching...</div>}
@@ -137,7 +164,7 @@ const AddAssetModal = ({ isOpen, onClose }) => {
                                     )}
                                 </div>
                                 <div className="form-group">
-                                    <label>Units</label>
+                                    <label>Units{assetData.type === 'precious_metals' ? ' (ounce)' : ''}</label>
                                     <input
                                         type="number"
                                         step="any"

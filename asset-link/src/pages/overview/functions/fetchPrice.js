@@ -1,3 +1,7 @@
+import { supportedCryptos } from "./cryptoConfig";
+import { supportedPreciousMetals } from "./preciousMetalsConfig";
+import axios from "axios";
+
 async function fetchPrice(type, ticker) {
     switch (type) {
         case 'stock':
@@ -28,12 +32,54 @@ async function fetchPrice(type, ticker) {
             };
 
         case 'crypto':
-            // TODO: Implement crypto price fetching
-            throw new Error('Crypto price fetching not yet implemented');
+            const crypto = supportedCryptos.find(c => c.symbol === ticker);
+            if (!crypto) {
+                throw new Error('Unsupported cryptocurrency');
+            }
+
+            try {
+                const response = await axios.get(
+                    `https://api.coingecko.com/api/v3/simple/price?ids=${crypto.id}&vs_currencies=usd`,
+                    { headers: { 'Content-Type': 'application/json' } }
+                );
+                return {
+                    name: crypto.name,
+                    price: response.data[crypto.id].usd,
+                }
+            } catch (error) {
+                console.error('Error fetching crypto price:', error);
+                throw new Error('Failed to fetch cryptocurrency price');
+            }
 
         case 'precious_metals':
-            // TODO: Implement precious metals price fetching
-            throw new Error('Precious metals price fetching not yet implemented');
+            const metal = supportedPreciousMetals.find(m => m.symbol === ticker);
+            if (!metal) {
+                throw new Error('Unsupported precious metal!');
+            }
+            try {
+                const response = await fetch(
+                    `https://www.goldapi.io/api/${metal.symbol}/USD`,
+                    {
+                        headers: {
+                            'x-access-token': import.meta.env.VITE_GOLDAPI_API_KEY,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch precious metal price');
+                }
+
+                const data = await response.json();
+                return {
+                    name: metal.name,
+                    price: data.price
+                };
+            } catch (error) {
+                console.error('Error fetching precious metal price:', error);
+                throw new Error('Failed to fetch precious metal price');
+            }
 
         default:
             throw new Error('Invalid asset type for ticker lookup');
