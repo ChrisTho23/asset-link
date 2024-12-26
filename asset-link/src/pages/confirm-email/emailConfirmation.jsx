@@ -20,18 +20,25 @@ const EmailConfirmation = () => {
         try {
             const loginData = await logIn({ email, password });
 
+            if (!loginData.user) {
+                setError("Account not found. Please make sure you've clicked the confirmation link in your email first.");
+                return;
+            }
+
             if (!loginData.user?.email_confirmed_at) {
-                setError("Email not yet confirmed. Please check your inbox.");
+                setError("Email not yet confirmed. Please click the confirmation link in your email first.");
                 return;
             }
 
             // register user 
             await registerUser(loginData.user?.id, userData);
 
-            // redirect to onboarding
-            navigate(`/overview/${loginData.user.id}/onboarding`);
+            // redirect to overview with showOnboarding state
+            navigate(`/overview/${loginData.user.id}`, {
+                state: { showOnboarding: true }
+            });
         } catch (error) {
-            setError(error.message);
+            setError("Unable to verify email confirmation. Please make sure you've clicked the confirmation link in your email first.");
         }
     };
 

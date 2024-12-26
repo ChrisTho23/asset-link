@@ -7,7 +7,7 @@ import { supportedCryptos } from '../../functions/cryptoConfig';
 import { supportedPreciousMetals } from '../../functions/preciousMetalsConfig';
 import { icons } from '../../../../assets/icons';
 
-const AddAssetModal = ({ isOpen, onClose }) => {
+const AddAssetModal = ({ isOpen, onClose, selectedCurrency }) => {
     const [assetData, setAssetData] = useState({
         name: '',
         ticker: '',
@@ -85,7 +85,7 @@ const AddAssetModal = ({ isOpen, onClose }) => {
             units: parseFloat(assetData.units),
             currentPrice: assetData.currentPrice ? parseFloat(assetData.currentPrice) : null
         };
-        const result = await addAsset(submitData);
+        const result = await addAsset(submitData, selectedCurrency);
         setAssetData({ type: '', name: '', units: '', currentPrice: '', ticker: '' });
         setSearchQuery('');
         setSearchResults([]);
@@ -189,7 +189,7 @@ const AddAssetModal = ({ isOpen, onClose }) => {
                                 )}
                                 {assetData.type === 'cash' ? (
                                     <div className="form-group">
-                                        <label>Amount ($)</label>
+                                        <label>Amount in {selectedCurrency.code}</label>
                                         <input
                                             type="number"
                                             step="any"
@@ -200,7 +200,7 @@ const AddAssetModal = ({ isOpen, onClose }) => {
                                     </div>
                                 ) : assetData.type === 'real_estate' ? (
                                     <div className="form-group">
-                                        <label>Property Value ($)</label>
+                                        <label>Property Value in {selectedCurrency.code}</label>
                                         <input
                                             type="number"
                                             step="any"
@@ -210,18 +210,16 @@ const AddAssetModal = ({ isOpen, onClose }) => {
                                         />
                                     </div>
                                 ) : assetData.type === 'equity' ? (
-                                    <>
-                                        <div className="form-group">
-                                            <label>Price per Share ($)</label>
-                                            <input
-                                                type="number"
-                                                step="any"
-                                                value={assetData.currentPrice}
-                                                onChange={(e) => setAssetData({ ...assetData, currentPrice: e.target.value })}
-                                                required
-                                            />
-                                        </div>
-                                    </>
+                                    <div className="form-group">
+                                        <label>Price per Share in {selectedCurrency.code}</label>
+                                        <input
+                                            type="number"
+                                            step="any"
+                                            value={assetData.currentPrice}
+                                            onChange={(e) => setAssetData({ ...assetData, currentPrice: e.target.value })}
+                                            required
+                                        />
+                                    </div>
                                 ) : null}
                             </>
                         )}

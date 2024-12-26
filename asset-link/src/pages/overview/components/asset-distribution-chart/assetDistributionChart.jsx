@@ -1,7 +1,8 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import './assetDistributionChart.css';
+import { formatCurrency } from '../../../../utils/numberFormatter';
 
-const AssetDistributionChart = ({ data }) => {
+const AssetDistributionChart = ({ data, selectedCurrency, isConverting }) => {
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
     return (
@@ -19,13 +20,13 @@ const AssetDistributionChart = ({ data }) => {
                                 outerRadius={80}
                                 fill="#8884d8"
                                 dataKey="value"
-                                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                label={({ name, percent }) => `${name} ${formatCurrency(percent * 100)}%`}
                             >
                                 {data.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                 ))}
                             </Pie>
-                            <Tooltip formatter={(value) => `$${value.toLocaleString()}`} />
+                            <Tooltip formatter={(value) => `${selectedCurrency.symbol}${formatCurrency(value)}`} />
                             <Legend />
                         </PieChart>
                     </ResponsiveContainer>

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import './AssetsList.css';
 import AssetDetailModal from '../asset-detail/AssetDetailModal';
+import { formatCurrency } from '../../../../utils/numberFormatter';
 
-const AssetsList = ({ assets, onAddAsset, onDeleteAssets, onUpdateAsset }) => {
+const AssetsList = ({ assets, onAddAsset, onDeleteAssets, onUpdateAsset, selectedCurrency, isConverting }) => {
     const [selectedAssets, setSelectedAssets] = useState(new Set());
     const [selectedAsset, setSelectedAsset] = useState(null);
 
@@ -85,9 +86,19 @@ const AssetsList = ({ assets, onAddAsset, onDeleteAssets, onUpdateAsset }) => {
                                     />
                                 </td>
                                 <td>{asset.name}</td>
-                                <td>{parseFloat(asset.units).toFixed(2)}</td>
-                                <td>${parseFloat(asset.current_price).toLocaleString()}</td>
-                                <td>${parseFloat(asset.value).toLocaleString()}</td>
+                                <td>
+                                    {isConverting ? '...' : parseFloat(asset.units).toFixed(2)}
+                                </td>
+                                <td>
+                                    {isConverting ? '...' :
+                                        `${selectedCurrency.symbol}${parseFloat(asset.current_price).toLocaleString()}`
+                                    }
+                                </td>
+                                <td>
+                                    {isConverting ? '...' : (
+                                        `${selectedCurrency.symbol}${formatCurrency(asset.value, selectedCurrency.decimals)}`
+                                    )}
+                                </td>
                             </tr>
                         ))}
                     </tbody>
@@ -103,6 +114,7 @@ const AssetsList = ({ assets, onAddAsset, onDeleteAssets, onUpdateAsset }) => {
                 isOpen={!!selectedAsset}
                 onClose={() => setSelectedAsset(null)}
                 onSave={onUpdateAsset}
+                selectedCurrency={selectedCurrency}
             />
         </div>
     );

@@ -1,16 +1,26 @@
 import supabase from "../../../../subabaseClient";
 import fetchPrice from "./fetchPrice";
+import { convertCurrency } from "../../../utils/currencyConverter";
 
-const addAsset = async (assetData) => {
+const addAsset = async (assetData, selectedCurrency) => {
     try {
         let name = assetData.name;
         let currentPrice = assetData.currentPrice;
+
+        // Convert price to USD if not already in USD
+        if (selectedCurrency.code !== 'USD') {
+            currentPrice = await convertCurrency(
+                currentPrice,
+                selectedCurrency.code,
+                'USD'
+            );
+        }
 
         // Handle assets that use ticker symbols
         if (['stock', 'crypto', 'precious_metals'].includes(assetData.type)) {
             const priceData = await fetchPrice(assetData.type, assetData.ticker);
             name = priceData.name;
-            currentPrice = priceData.price;
+            currentPrice = priceData.price; // These are already in USD
         }
 
         const userId = (await supabase.auth.getUser()).data.user.id;

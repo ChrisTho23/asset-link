@@ -5,7 +5,7 @@ const signUp = async (credentials) => {
         email: credentials.email,
         password: credentials.password,
         options: {
-            emailRedirectTo: 'https://asset-link-keb6.vercel.app/',
+            emailRedirectTo: 'https://asset-link-keb6.vercel.app/overview/${userId}?showOnboarding=true',
         },
     });
     if (signUpError) {

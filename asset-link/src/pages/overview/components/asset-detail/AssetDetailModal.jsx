@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './AssetDetailModal.css';
 
-const AssetDetailModal = ({ asset, isOpen, onClose, onSave }) => {
+const AssetDetailModal = ({ asset, isOpen, onClose, onSave, selectedCurrency }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editedAsset, setEditedAsset] = useState(null);
 
@@ -96,7 +96,7 @@ const AssetDetailModal = ({ asset, isOpen, onClose, onSave }) => {
                             />
                         ) : (
                             <span className="detail-value">
-                                ${parseFloat(asset.current_price).toLocaleString()}
+                                {selectedCurrency.symbol}{parseFloat(asset.current_price).toLocaleString()}
                             </span>
                         )}
                     </div>
@@ -104,7 +104,7 @@ const AssetDetailModal = ({ asset, isOpen, onClose, onSave }) => {
                     <div className="detail-row">
                         <span className="detail-label">Total Value:</span>
                         <span className="detail-value">
-                            ${parseFloat(asset.value).toLocaleString()}
+                            {selectedCurrency.symbol}{parseFloat(asset.value).toLocaleString()}
                         </span>
                     </div>
                 </div>
