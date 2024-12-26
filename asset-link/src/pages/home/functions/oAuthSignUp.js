@@ -10,7 +10,7 @@ const oAuthSignUp = async (provider) => {
         options: {
             access_type: 'offline',
             prompt: 'consent',
-            redirectTo: 'https://asset-link-keb6.vercel.app/'
+            redirectTo: 'https://asset-link-keb6.vercel.app/showOnboarding=true'
         }
     });
     if (error) {

@@ -3,6 +3,7 @@ export const supportedCryptos = [
     { symbol: 'ETH', name: 'Ethereum', id: 'ethereum' },
     { symbol: 'USDT', name: 'Tether', id: 'tether' },
     { symbol: 'XRP', name: 'Ripple', id: 'ripple' },
+    { symbol: 'BNB', name: 'Binance coin', id: 'binancecoin' },
     { symbol: 'SOL', name: 'Solana', id: 'solana' },
     { symbol: 'DOGE', name: 'Dogecoin', id: 'dogecoin' },
     { symbol: 'VET', name: 'Vechain', id: 'vechain' },

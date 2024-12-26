@@ -42,7 +42,7 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login', initialError = null
                 if (credentials.email && credentials.password) {
                     try {
                         const data = await logIn(credentials);
-                        navigate(`/overview/${data.user?.id}`);
+                        navigate(`/overview/${data.user?.id}?showOnboarding=false`);
                     } catch (error) {
                         if (error.message.includes('Invalid login credentials')) {
                             setError('Incorrect password. Please try again.');
@@ -133,11 +133,9 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login', initialError = null
 
                 if (previousView === 'signup' && loginData.session?.user?.user_metadata?.full_name
                     && loginData.session?.user?.user_metadata?.email) {
-                    navigate(`/overview/${loginData.session.user.id}`, {
-                        state: { showOnboarding: true }
-                    });
+                    navigate(`/overview/${loginData.session.user.id}?showOnboarding=true`);
                 } else {
-                    navigate(`/overview/${loginData.session.user.id}`);
+                    navigate(`/overview/${loginData.session.user.id}?showOnboarding=false`);
                 }
 
                 localStorage.removeItem('authView');

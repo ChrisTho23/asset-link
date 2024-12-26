@@ -8,14 +8,14 @@ const OnboardingOverlay = ({ onComplete }) => {
         {
             target: '.nav-button:nth-child(1)',
             description: 'View and manage all your assets in a detailed list',
-            style: { top: '65%', left: '25%' },
+            style: { top: '62%', left: '25%' },
             textPosition: 'left', // 'left', 'right', 'top', 'bottom'
             arrowRotation: 30 // degrees
         },
         {
             target: '.nav-button:nth-child(2)',
             description: 'Add your first asset',
-            style: { top: '58%', left: '68%' },
+            style: { top: '55%', left: '68%' },
             textPosition: 'left',
             arrowRotation: 30
         },
