@@ -1,6 +1,5 @@
 import supabase from '../../../../subabaseClient.js';
 import { setSession } from './sessionManager.js';
-import checkEmailExists from './checkEmailExists.js';
 
 const logIn = async (credentials) => {
     try {
