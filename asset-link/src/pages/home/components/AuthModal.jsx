@@ -72,7 +72,8 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login', initialError = null
                         email: credentials.email,
                         password: credentials.password,
                         userData: { ...user, email: credentials.email },
-                        userId: authData.user.id
+                        userId: authData.user.id,
+                        showOnboarding: true
                     }
                 });
             }
@@ -130,9 +131,16 @@ const AuthModal = ({ isOpen, onClose, initialView = 'login', initialError = null
                     );
                 }
 
-                // Clean up and navigate
+                if (previousView === 'signup' && loginData.session?.user?.user_metadata?.full_name
+                    && loginData.session?.user?.user_metadata?.email) {
+                    navigate(`/overview/${loginData.session.user.id}`, {
+                        state: { showOnboarding: true }
+                    });
+                } else {
+                    navigate(`/overview/${loginData.session.user.id}`);
+                }
+
                 localStorage.removeItem('authView');
-                navigate(`/overview/${loginData.session.user.id}`);
             } catch (error) {
                 console.error('Redirect handling error:', error);
                 setError(error.message || 'An error occurred during authentication.');
