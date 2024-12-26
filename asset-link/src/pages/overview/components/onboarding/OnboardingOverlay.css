@@ -1,0 +1,80 @@
+.onboarding-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+}
+
+.onboarding-arrow {
+    position: absolute;
+    display: flex;
+    align-items: flex-start;
+    color: #1275e0;
+}
+
+/* Different gaps based on flex direction */
+.onboarding-arrow[style*="row"] {
+    gap: 1rem;
+}
+
+.onboarding-arrow[style*="row-reverse"] {
+    gap: 0.3rem;
+}
+
+.onboarding-arrow[style*="column"] {
+    gap: 0.5rem;
+}
+
+.onboarding-arrow[style*="column-reverse"] {
+    gap: 0.5rem;
+}
+
+.arrow-icon {
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+    margin-top: 0.5rem;
+}
+
+
+.onboarding-description {
+    color: #2583EF;
+    font-size: 1.2rem;
+    font-weight: 500;
+    max-width: 300px;
+}
+
+.onboarding-actions {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.onboarding-actions button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: white;
+    color: #333;
+}
+
+.onboarding-actions button:last-child {
+    background-color: #007bff;
+    color: white;
+}
+
+.click-message {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 1.1rem;
+    opacity: 0.8;
+}

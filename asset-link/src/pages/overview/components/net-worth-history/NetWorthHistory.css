@@ -1,0 +1,61 @@
+.history-chart-container {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    color: #333;
+    font-size: 1.2rem;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.chart-content {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.no-data-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.time-range-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.time-range-button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #000;
+}
+
+.time-range-button:hover {
+    background: #f0f0f0;
+}
+
+.time-range-button.active {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
