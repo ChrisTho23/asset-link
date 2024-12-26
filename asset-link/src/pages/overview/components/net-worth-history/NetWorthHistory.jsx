@@ -9,8 +9,9 @@ import {
     ResponsiveContainer
 } from 'recharts';
 import './NetWorthHistory.css';
+import { formatCurrency } from '../../../../utils/numberFormatter';
 
-const NetWorthHistory = ({ data }) => {
+const NetWorthHistory = ({ data, selectedCurrency, isConverting }) => {
     const [timeRange, setTimeRange] = useState('month');
     // Possible values: 'year', 'month', 'week', 'day'
 
@@ -32,7 +33,7 @@ const NetWorthHistory = ({ data }) => {
 
     const formatValue = (value) => {
         if (value == null) return '';
-        return `$${value.toLocaleString()}`;
+        return `${selectedCurrency.symbol}${formatCurrency(value)}`;
     };
 
     const getDateRange = (range) => {
@@ -359,7 +360,7 @@ const NetWorthHistory = ({ data }) => {
                             <Tooltip
                                 labelFormatter={(ts) => formatDate(ts)}
                                 formatter={(value) => [
-                                    `$${(value ?? 0).toLocaleString()}`,
+                                    `${selectedCurrency.symbol}${formatCurrency(value ?? 0)}`,
                                     'Net Worth'
                                 ]}
                             />

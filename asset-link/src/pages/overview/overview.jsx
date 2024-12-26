@@ -19,6 +19,9 @@ import calculateNetWorthChange from './functions/calculateNetWorthChange';
 import { icons } from '../../assets/icons';
 import BackgroundPattern from '../../components/BackgroundPattern/BackgroundPattern';
 import OnboardingOverlay from './components/onboarding/OnboardingOverlay';
+import { convertCurrency } from "../../utils/currencyConverter";
+import { currencies } from "./components/currency-selector/CurrencySelector";
+import CurrencySelector from './components/currency-selector/CurrencySelector';
 
 const Overview = () => {
     const { id } = useParams();
@@ -29,7 +32,19 @@ const Overview = () => {
     const [netWorthHistory, setNetWorthHistory] = useState([]);
     const [activeView, setActiveView] = useState('total');
     const [showOnboarding, setShowOnboarding] = useState(false);
+    const [selectedCurrency, setSelectedCurrency] = useState(() => {
+        const savedCurrency = localStorage.getItem('selectedCurrency');
+        return savedCurrency ? JSON.parse(savedCurrency) : currencies[0];
+    });
     const location = useLocation();
+    const [convertedAssets, setConvertedAssets] = useState([]);
+    const [convertedNetWorth, setConvertedNetWorth] = useState(0);
+    const [convertedHistory, setConvertedHistory] = useState([]);
+    const [isConverting, setIsConverting] = useState(false);
+
+    useEffect(() => {
+        localStorage.setItem('selectedCurrency', JSON.stringify(selectedCurrency));
+    }, [selectedCurrency]);
 
     const loadData = async () => {
         try {
@@ -98,34 +113,86 @@ const Overview = () => {
         setShowOnboarding(false);
     };
 
+    const convertAllAmounts = async () => {
+        if (selectedCurrency.code === 'USD') {
+            // If USD, no conversion needed
+            setConvertedAssets(assets);
+            setConvertedNetWorth(totalNetWorth);
+            setConvertedHistory(netWorthHistory);
+            return;
+        }
+
+        setIsConverting(true);
+        try {
+            // Convert total net worth
+            const convertedWorth = await convertCurrency(totalNetWorth, 'USD', selectedCurrency.code);
+            setConvertedNetWorth(convertedWorth);
+
+            // Convert assets
+            const newAssets = await Promise.all(assets.map(async (asset) => ({
+                ...asset,
+                current_price: await convertCurrency(asset.current_price, 'USD', selectedCurrency.code),
+                value: await convertCurrency(asset.value, 'USD', selectedCurrency.code),
+            })));
+            setConvertedAssets(newAssets);
+
+            // Convert history
+            const newHistory = await Promise.all(netWorthHistory.map(async (entry) => ({
+                ...entry,
+                total_value: await convertCurrency(entry.total_value, 'USD', selectedCurrency.code),
+            })));
+            setConvertedHistory(newHistory);
+        } catch (error) {
+            console.error('Error converting currencies:', error);
+        } finally {
+            setIsConverting(false);
+        }
+    };
+
+    useEffect(() => {
+        convertAllAmounts();
+    }, [selectedCurrency, totalNetWorth, assets, netWorthHistory]);
+
     const renderContent = () => {
         switch (activeView) {
             case 'assets':
                 return (
                     <AssetsList
-                        assets={assets}
+                        assets={convertedAssets}
                         onAddAsset={() => setIsAddAssetModalOpen(true)}
                         onDeleteAssets={handleDeleteAssets}
                         onUpdateAsset={handleUpdateAsset}
+                        selectedCurrency={selectedCurrency}
+                        isConverting={isConverting}
                     />
                 );
             case 'split':
                 return (
                     <AssetDistributionChart
-                        data={assets.map(asset => ({
+                        data={convertedAssets.map(asset => ({
                             name: asset.name,
-                            value: asset.totalWorth
+                            value: asset.value
                         }))}
+                        selectedCurrency={selectedCurrency}
+                        isConverting={isConverting}
                     />
                 );
             case 'history':
-                return <NetWorthHistory data={netWorthHistory} />;
+                return (
+                    <NetWorthHistory
+                        data={convertedHistory}
+                        selectedCurrency={selectedCurrency}
+                        isConverting={isConverting}
+                    />
+                );
             default:
                 return <AssetsList
-                    assets={assets}
+                    assets={convertedAssets}
                     onAddAsset={() => setIsAddAssetModalOpen(true)}
                     onDeleteAssets={handleDeleteAssets}
                     onUpdateAsset={handleUpdateAsset}
+                    selectedCurrency={selectedCurrency}
+                    isConverting={isConverting}
                 />
         }
     };
@@ -133,12 +200,20 @@ const Overview = () => {
     return (
         <div className="overview-container">
             <BackgroundPattern />
-            {user && <Welcome firstName={user.first_name} lastName={user.last_name} />}
+            <div className="overview-header">
+                {user && <Welcome firstName={user.first_name} lastName={user.last_name} />}
+                <CurrencySelector
+                    selectedCurrency={selectedCurrency}
+                    onCurrencyChange={setSelectedCurrency}
+                />
+            </div>
 
             <div className="net-worth-section">
                 <NetWorthBox
-                    amount={totalNetWorth}
-                    change={calculateNetWorthChange(netWorthHistory, totalNetWorth)}
+                    amount={convertedNetWorth}
+                    change={calculateNetWorthChange(convertedHistory, convertedNetWorth)}
+                    selectedCurrency={selectedCurrency}
+                    isConverting={isConverting}
                 />
             </div>
 
@@ -175,6 +250,7 @@ const Overview = () => {
             <AddAssetModal
                 isOpen={isAddAssetModalOpen}
                 onClose={handleModalClose}
+                selectedCurrency={selectedCurrency}
             />
 
             {showOnboarding && (
