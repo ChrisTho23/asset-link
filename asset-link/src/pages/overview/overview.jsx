@@ -1,4 +1,4 @@
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Welcome from './components/welcome/Welcome';
 import NetWorthBox from './components/net-worth-box/NetWorthBox';
@@ -41,6 +41,7 @@ const Overview = () => {
     const [convertedNetWorth, setConvertedNetWorth] = useState(0);
     const [convertedHistory, setConvertedHistory] = useState([]);
     const [isConverting, setIsConverting] = useState(false);
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
         localStorage.setItem('selectedCurrency', JSON.stringify(selectedCurrency));
@@ -82,8 +83,12 @@ const Overview = () => {
     }, [id]);
 
     useEffect(() => {
-        // Check if user is coming from signup
-        if (location.state?.showOnboarding) {
+        // Check both URL parameters and location state
+        const urlParams = new URLSearchParams(window.location.search);
+        const shouldShowOnboarding = urlParams.get('showOnboarding') === 'true' ||
+            location.state?.showOnboarding;
+
+        if (shouldShowOnboarding) {
             setShowOnboarding(true);
         }
     }, [location]);
@@ -253,9 +258,7 @@ const Overview = () => {
                 selectedCurrency={selectedCurrency}
             />
 
-            {showOnboarding && (
-                <OnboardingOverlay onComplete={handleOnboardingComplete} />
-            )}
+            {showOnboarding && <OnboardingOverlay onComplete={() => setShowOnboarding(false)} />}
         </div>
     );
 };
