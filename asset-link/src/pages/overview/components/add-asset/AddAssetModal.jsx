@@ -19,6 +19,7 @@ const AddAssetModal = ({ isOpen, onClose, selectedCurrency }) => {
     const [searchResults, setSearchResults] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
     const [skipSearch, setSkipSearch] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         if (skipSearch) {
@@ -80,16 +81,32 @@ const AddAssetModal = ({ isOpen, onClose, selectedCurrency }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const submitData = {
-            ...assetData,
-            units: parseFloat(assetData.units),
-            currentPrice: assetData.currentPrice ? parseFloat(assetData.currentPrice) : null
-        };
-        const result = await addAsset(submitData, selectedCurrency);
-        setAssetData({ type: '', name: '', units: '', currentPrice: '', ticker: '' });
-        setSearchQuery('');
-        setSearchResults([]);
-        onClose(result.success);
+        setIsSubmitting(true);
+
+        try {
+            // For manual price entry assets, ensure price is in display currency
+            if (['cash', 'real_estate', 'equity'].includes(assetData.type)) {
+                const result = await addAsset({
+                    ...assetData,
+                    currentPrice: parseFloat(assetData.currentPrice),
+                    units: parseFloat(assetData.units)
+                }, selectedCurrency);
+
+                if (result.success) {
+                    onClose(true);
+                }
+            } else {
+                // For assets with automatic price fetching (stocks, crypto, etc.)
+                const result = await addAsset(assetData, selectedCurrency);
+                if (result.success) {
+                    onClose(true);
+                }
+            }
+        } catch (error) {
+            console.error('Error adding asset:', error);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     const handleClose = () => {

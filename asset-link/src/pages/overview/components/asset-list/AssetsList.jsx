@@ -35,6 +35,67 @@ const AssetsList = ({ assets, onAddAsset, onDeleteAssets, onUpdateAsset, selecte
         setSelectedAsset(asset);
     };
 
+    const renderAssetRow = (asset) => {
+        if (asset.asset_type === 'cash') {
+            return (
+                <tr
+                    key={asset.id}
+                    className={selectedAssets.has(asset.id) ? 'selected' : ''}
+                    onClick={(e) => handleRowClick(asset, e)}
+                    style={{ cursor: 'pointer' }}
+                >
+                    <td className="checkbox-column">
+                        <input
+                            type="checkbox"
+                            className="asset-checkbox"
+                            checked={selectedAssets.has(asset.id)}
+                            onChange={() => handleAssetSelect(asset.id)}
+                        />
+                    </td>
+                    <td>{asset.name}</td>
+                    <td colSpan="2"> </td>
+                    <td>
+                        {isConverting ? '...' : (
+                            `${selectedCurrency.symbol}${formatCurrency(asset.value, selectedCurrency.decimals)}`
+                        )}
+                    </td>
+                </tr>
+            );
+        }
+
+        return (
+            <tr
+                key={asset.id}
+                className={selectedAssets.has(asset.id) ? 'selected' : ''}
+                onClick={(e) => handleRowClick(asset, e)}
+                style={{ cursor: 'pointer' }}
+            >
+                <td className="checkbox-column">
+                    <input
+                        type="checkbox"
+                        className="asset-checkbox"
+                        checked={selectedAssets.has(asset.id)}
+                        onChange={() => handleAssetSelect(asset.id)}
+                    />
+                </td>
+                <td>{asset.name}</td>
+                <td>
+                    {isConverting ? '...' : parseFloat(asset.units).toFixed(2)}
+                </td>
+                <td>
+                    {isConverting ? '...' :
+                        `${selectedCurrency.symbol}${parseFloat(asset.current_price).toLocaleString()}`
+                    }
+                </td>
+                <td>
+                    {isConverting ? '...' : (
+                        `${selectedCurrency.symbol}${formatCurrency(asset.value, selectedCurrency.decimals)}`
+                    )}
+                </td>
+            </tr>
+        );
+    };
+
     return (
         <div className="assets-container">
             {selectedAssets.size > 0 && (
@@ -70,37 +131,7 @@ const AssetsList = ({ assets, onAddAsset, onDeleteAssets, onUpdateAsset, selecte
                         </tr>
                     </thead>
                     <tbody>
-                        {assets.map(asset => (
-                            <tr
-                                key={asset.id}
-                                className={selectedAssets.has(asset.id) ? 'selected' : ''}
-                                onClick={(e) => handleRowClick(asset, e)}
-                                style={{ cursor: 'pointer' }}
-                            >
-                                <td className="checkbox-column">
-                                    <input
-                                        type="checkbox"
-                                        className="asset-checkbox"
-                                        checked={selectedAssets.has(asset.id)}
-                                        onChange={() => handleAssetSelect(asset.id)}
-                                    />
-                                </td>
-                                <td>{asset.name}</td>
-                                <td>
-                                    {isConverting ? '...' : parseFloat(asset.units).toFixed(2)}
-                                </td>
-                                <td>
-                                    {isConverting ? '...' :
-                                        `${selectedCurrency.symbol}${parseFloat(asset.current_price).toLocaleString()}`
-                                    }
-                                </td>
-                                <td>
-                                    {isConverting ? '...' : (
-                                        `${selectedCurrency.symbol}${formatCurrency(asset.value, selectedCurrency.decimals)}`
-                                    )}
-                                </td>
-                            </tr>
-                        ))}
+                        {assets.map(asset => renderAssetRow(asset))}
                     </tbody>
                 </table>
             ) : (

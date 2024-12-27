@@ -11,4 +11,5 @@ export const icons = [
     { id: "net-worth", icon: <img width="48" height="48" src="https://img.icons8.com/color/48/average-2.png" alt="average-2" /> },
     { id: "info", icon: <img width="40" height="40" src="https://img.icons8.com/ultraviolet/40/info--v1.png" alt="info--v1" /> },
     { id: "arrow", icon: <img width="48" height="48" src="https://img.icons8.com/pieces/48/arrow.png" alt="arrow" /> },
+    { id: "user-icon", icon: <img width="32" height="32" src="https://img.icons8.com/pulsar-color/32/admin-settings-male.png" alt="admin-settings-male" /> },
 ];
