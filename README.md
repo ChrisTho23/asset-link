@@ -54,7 +54,7 @@ To run the project locally:
 ```bash
 git clone https://github.com/YourUsername/asset-link.git
 ```
-- Create a `.env` file according to env.temlate
+- Create a `.env` file according to env.template
 - Install dependencies
 ```bash
 npm install
