@@ -7,7 +7,7 @@ const oAuthSignUp = async (provider) => {
 
     // Determine the redirect URL based on the environment
     const redirectUrl = window.location.hostname === 'localhost'
-        ? 'http://localhost:5173/'
+        ? 'http://localhost:5173'
         : 'https://asset-link-keb6.vercel.app';
 
     const { data, error } = await supabase.auth.signInWithOAuth({
