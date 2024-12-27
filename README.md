@@ -2,7 +2,7 @@
 
 Track all your assets in one place. Visit [Asset Link](https://asset-link-keb6.vercel.app/)
 
-[Tutorial Video Placeholder - Coming Soon]
+https://github.com/user-attachments/assets/13430fb6-ae11-448c-8119-7c98831f154d
 
 ## Overview
 
