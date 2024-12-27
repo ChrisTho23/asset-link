@@ -1,6 +1,6 @@
 # Asset Link
 
-Track all your assets in one place. Visit [Asset Link](https://asset-link-keb6.vercel.app/)
+Track all your assets in one place. Visit [Asset Link](https://asset-link-keb6.vercel.app/). (Disclaimer: Alpha Vantage API is rate limiting the application after quite a bit so let me know if there's someone actually interested in using this. I can then think about getting a premium tier for the API) 
 
 https://github.com/user-attachments/assets/13430fb6-ae11-448c-8119-7c98831f154d
 
