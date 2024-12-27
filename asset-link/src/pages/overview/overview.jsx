@@ -19,7 +19,7 @@ import calculateNetWorthChange from './functions/calculateNetWorthChange';
 import { icons } from '../../assets/icons';
 import BackgroundPattern from '../../components/BackgroundPattern/BackgroundPattern';
 import OnboardingOverlay from './components/onboarding/OnboardingOverlay';
-import { convertCurrency } from "../../utils/currencyConverter";
+import { convertCurrency, needsConversion } from "../../utils/currencyConverter";
 import { currencies } from "./components/currency-selector/CurrencySelector";
 import CurrencySelector from './components/currency-selector/CurrencySelector';
 
@@ -108,9 +108,9 @@ const Overview = () => {
     };
 
     const handleUpdateAsset = async (updatedAsset) => {
-        const result = await updateAsset(updatedAsset);
+        const result = await updateAsset(updatedAsset, selectedCurrency);
         if (result.success) {
-            await loadData(); // This already includes logging to history
+            await loadData();
         }
     };
 
@@ -127,13 +127,37 @@ const Overview = () => {
             return;
         }
 
+        // Check if we need to fetch new rates
+        if (!needsConversion('USD', selectedCurrency.code)) {
+            // Use cached rates
+            try {
+                const convertedWorth = await convertCurrency(totalNetWorth, 'USD', selectedCurrency.code);
+                setConvertedNetWorth(convertedWorth);
+
+                const newAssets = await Promise.all(assets.map(async (asset) => ({
+                    ...asset,
+                    current_price: await convertCurrency(asset.current_price, 'USD', selectedCurrency.code),
+                    value: await convertCurrency(asset.value, 'USD', selectedCurrency.code),
+                })));
+                setConvertedAssets(newAssets);
+
+                const newHistory = await Promise.all(netWorthHistory.map(async (entry) => ({
+                    ...entry,
+                    total_value: await convertCurrency(entry.total_value, 'USD', selectedCurrency.code),
+                })));
+                setConvertedHistory(newHistory);
+                return;
+            } catch (error) {
+                console.error('Error converting with cached rates:', error);
+            }
+        }
+
+        // If we need new rates or cached conversion failed
         setIsConverting(true);
         try {
-            // Convert total net worth
             const convertedWorth = await convertCurrency(totalNetWorth, 'USD', selectedCurrency.code);
             setConvertedNetWorth(convertedWorth);
 
-            // Convert assets
             const newAssets = await Promise.all(assets.map(async (asset) => ({
                 ...asset,
                 current_price: await convertCurrency(asset.current_price, 'USD', selectedCurrency.code),
@@ -141,7 +165,6 @@ const Overview = () => {
             })));
             setConvertedAssets(newAssets);
 
-            // Convert history
             const newHistory = await Promise.all(netWorthHistory.map(async (entry) => ({
                 ...entry,
                 total_value: await convertCurrency(entry.total_value, 'USD', selectedCurrency.code),
