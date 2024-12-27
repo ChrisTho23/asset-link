@@ -10,4 +10,8 @@ export const supportedCryptos = [
     { symbol: 'WOO', name: 'WOO', id: 'woo' },
     { symbol: 'ADA', name: 'Cardano', id: 'cardano' },
     { symbol: 'LINK', name: 'Chainlink', id: 'chainlink' },
+    { symbol: 'SHIB', name: 'Shiba Inu', id: 'shiba-inu' },
+    { symbol: 'WIF', name: 'dogwifhat', id: 'dogwifcoin' },
+    { symbol: 'SUI', name: 'Sui', id: 'sui' },
+    { symbol: 'BCH', name: 'Bitcoin Cash', id: 'bitcoin-cash' },
 ];
