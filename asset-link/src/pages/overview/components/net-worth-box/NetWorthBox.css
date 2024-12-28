@@ -54,3 +54,30 @@
     color: #6c757d;
     font-size: 0.9rem;
 }
+
+.net-worth-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.refresh-button {
+    padding: 0.5rem 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.refresh-button:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.refresh-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}

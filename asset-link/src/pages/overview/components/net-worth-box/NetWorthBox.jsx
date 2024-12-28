@@ -2,12 +2,21 @@ import './NetWorthBox.css';
 import { icons } from '../../../../assets/icons';
 import { formatCurrency } from '../../../../utils/numberFormatter';
 
-const NetWorthBox = ({ amount, change, selectedCurrency, isConverting }) => (
+const NetWorthBox = ({ amount, change, selectedCurrency, isConverting, onRefresh, isRefreshing }) => (
     <div className="net-worth-box">
-        <h3 className="section-title">
-            <span className="title-icon">{icons.find(i => i.id === 'net-worth').icon}</span>
-            Total Net Worth
-        </h3>
+        <div className="net-worth-header">
+            <h3 className="section-title">
+                <span className="title-icon">{icons.find(i => i.id === 'net-worth').icon}</span>
+                Total Net Worth
+            </h3>
+            <button
+                className="refresh-button"
+                onClick={onRefresh}
+                disabled={isRefreshing || isConverting}
+            >
+                {isRefreshing ? 'Refreshing...' : 'Refresh'}
+            </button>
+        </div>
         <div className="net-worth-content">
             {isConverting ? (
                 <span className="loading">Converting...</span>
