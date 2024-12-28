@@ -42,6 +42,7 @@ const Overview = () => {
     const [convertedHistory, setConvertedHistory] = useState([]);
     const [isConverting, setIsConverting] = useState(false);
     const [searchParams] = useSearchParams();
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
     useEffect(() => {
         localStorage.setItem('selectedCurrency', JSON.stringify(selectedCurrency));
@@ -181,6 +182,23 @@ const Overview = () => {
         convertAllAmounts();
     }, [selectedCurrency, totalNetWorth, assets, netWorthHistory]);
 
+    const handleRefresh = async () => {
+        setIsRefreshing(true);
+        try {
+            await loadData();
+        } finally {
+            setIsRefreshing(false);
+        }
+    };
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            loadData();
+        }, 60 * 60 * 1000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     const renderContent = () => {
         switch (activeView) {
             case 'assets':
@@ -230,10 +248,12 @@ const Overview = () => {
             <BackgroundPattern />
             <div className="overview-header">
                 {user && <Welcome firstName={user.first_name} lastName={user.last_name} />}
-                <CurrencySelector
-                    selectedCurrency={selectedCurrency}
-                    onCurrencyChange={setSelectedCurrency}
-                />
+                <div className="header-controls">
+                    <CurrencySelector
+                        selectedCurrency={selectedCurrency}
+                        onCurrencyChange={setSelectedCurrency}
+                    />
+                </div>
             </div>
 
             <div className="net-worth-section">
@@ -242,6 +262,8 @@ const Overview = () => {
                     change={calculateNetWorthChange(convertedHistory, convertedNetWorth)}
                     selectedCurrency={selectedCurrency}
                     isConverting={isConverting}
+                    onRefresh={handleRefresh}
+                    isRefreshing={isRefreshing}
                 />
             </div>
 

@@ -5,10 +5,12 @@ async function updateAssetPrices(assets) {
         if (['stock', 'crypto', 'precious_metals'].includes(asset.type)) {
             try {
                 const priceData = await fetchPrice(asset.type, asset.ticker);
+                const newValue = priceData.price * asset.units;
                 return {
                     ...asset,
-                    price_per_unit: priceData.price,
-                    totalWorth: priceData.price * asset.quantity
+                    current_price: priceData.price,
+                    value: newValue,
+                    totalWorth: newValue
                 };
             } catch (error) {
                 console.error(`Failed to update price for ${asset.name}:`, error);
